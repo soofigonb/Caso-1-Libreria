@@ -13,6 +13,7 @@ public class LibreriaServicio {
 
     private final LibreriaRepositorio repo;
     
+    //Guardar
     public Libro guardar (Libro libro){
         if (libro != null && !libro.getNombre().isEmpty()) {
             return repo.save(libro);
@@ -20,10 +21,12 @@ public class LibreriaServicio {
         return null;
     }
 
+    //Obtener todos
     public List<Libro> obtenerTodos(){
         return repo.findAll();
     }
 
+    //Eliminar por nombre
     public boolean eliminar(String nombre){
         if (nombre != null && !nombre.isEmpty()) {
             return repo.delete(nombre);

@@ -27,7 +27,7 @@ public class LibreriaControlador {
 
     private final LibreriaServicio servicio;
 
-    @PostMapping("")
+    @PostMapping("") //http://localhost:8081/api/v1/productos
     public ResponseEntity<?> guardar(@RequestBody Libro libro) {
         Libro nuevo = servicio.guardar(libro);
 
@@ -38,12 +38,12 @@ public class LibreriaControlador {
         return ResponseEntity.badRequest().body("No se pudo agregar el libro");
     }
 
-    @GetMapping("")
+    @GetMapping("") //http://localhost:8081/api/v1/productos
     public List<Libro> obtenerTodos() {
         return servicio.obtenerTodos();
     }
 
-    @DeleteMapping("/{nombre}")
+    @DeleteMapping("/{nombre}") //http://localhost:8081/api/v1/productos/{nombre}
     public ResponseEntity<String> borrar(@PathVariable String nombre) {
         if (servicio.eliminar(nombre)) {
             return ResponseEntity.status(204).body("Producto eliminado");
