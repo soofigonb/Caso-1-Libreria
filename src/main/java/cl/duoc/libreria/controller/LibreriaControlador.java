@@ -29,27 +29,40 @@ public class LibreriaControlador {
 
     @PostMapping("") //http://localhost:8081/api/v1/productos
     public ResponseEntity<?> guardar(@RequestBody Libro libro) {
-        Libro nuevo = servicio.guardar(libro);
+        try {
+            Libro nuevo = servicio.guardar(libro);
 
-        if (nuevo != null) {
+            if (nuevo == null) {
+                return ResponseEntity.badRequest()
+                        .body("Datos inválidos: nombre, precio o categoría incorrectos");
+            }
+
             return ResponseEntity.status(201).body(nuevo);
-        }
 
-        return ResponseEntity.badRequest().body("No se pudo agregar el libro");
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body("Error interno del servidor");
+        }
     }
 
     @GetMapping("") //http://localhost:8081/api/v1/productos
-    public List<Libro> obtenerTodos() {
-        return servicio.obtenerTodos();
+    public ResponseEntity<List<Libro>> obtenerTodos() {
+        List<Libro> lista = servicio.obtenerTodos();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(lista);
     }
 
     @DeleteMapping("/{nombre}") //http://localhost:8081/api/v1/productos/{nombre}
     public ResponseEntity<String> borrar(@PathVariable String nombre) {
         if (servicio.eliminar(nombre)) {
-            return ResponseEntity.status(204).body("Producto eliminado");
+            return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.badRequest().body("Producto no existe.");
+        return ResponseEntity.status(404).body("Producto no encontrado");
     }
     
     

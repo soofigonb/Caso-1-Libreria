@@ -15,10 +15,21 @@ public class LibreriaServicio {
     
     //Guardar
     public Libro guardar (Libro libro){
-        if (libro != null && !libro.getNombre().isEmpty()) {
-            return repo.save(libro);
+        if (libro == null) return null;
+
+        if (libro.getNombre() == null || libro.getNombre().isEmpty()) {
+            return null;
         }
-        return null;
+
+        if (libro.getPrecio() <= 0) {
+            return null;
+        }
+
+        if (libro.getCategoria() == null || libro.getCategoria().isEmpty()) {
+            return null;
+        }
+
+        return repo.save(libro);
     }
 
     //Obtener todos
